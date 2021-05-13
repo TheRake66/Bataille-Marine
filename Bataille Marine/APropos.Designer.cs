@@ -28,13 +28,15 @@
         /// </summary>
         private void InitializeComponent()
         {
+            this.components = new System.ComponentModel.Container();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(APropos));
             this.label1 = new System.Windows.Forms.Label();
             this.richTextBox1 = new System.Windows.Forms.RichTextBox();
             this.buttonFermer = new System.Windows.Forms.Button();
-            this.pictureBox1 = new System.Windows.Forms.PictureBox();
+            this.pictureBoxLogo = new System.Windows.Forms.PictureBox();
             this.label2 = new System.Windows.Forms.Label();
-            ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
+            this.timerAnim = new System.Windows.Forms.Timer(this.components);
+            ((System.ComponentModel.ISupportInitialize)(this.pictureBoxLogo)).BeginInit();
             this.SuspendLayout();
             // 
             // label1
@@ -55,9 +57,7 @@
             this.richTextBox1.ReadOnly = true;
             this.richTextBox1.Size = new System.Drawing.Size(284, 137);
             this.richTextBox1.TabIndex = 2;
-            this.richTextBox1.Text = "Bienvenue dans le jeu de la bataille marine. Purement inspiré du démineur, il int" +
-    "ègre un thème sur la mer.\n\nCe jeu est un projet d\'entrainement aux algorithmes.\n" +
-    "\nIl a été réalisé en C# Winform.";
+            this.richTextBox1.Text = resources.GetString("richTextBox1.Text");
             // 
             // buttonFermer
             // 
@@ -70,14 +70,15 @@
             this.buttonFermer.UseVisualStyleBackColor = true;
             this.buttonFermer.Click += new System.EventHandler(this.buttonFermer_Click);
             // 
-            // pictureBox1
+            // pictureBoxLogo
             // 
-            this.pictureBox1.Image = ((System.Drawing.Image)(resources.GetObject("pictureBox1.Image")));
-            this.pictureBox1.Location = new System.Drawing.Point(117, 30);
-            this.pictureBox1.Name = "pictureBox1";
-            this.pictureBox1.Size = new System.Drawing.Size(100, 100);
-            this.pictureBox1.TabIndex = 0;
-            this.pictureBox1.TabStop = false;
+            this.pictureBoxLogo.Image = global::Bataille_Marine.Properties.Resources.mine;
+            this.pictureBoxLogo.Location = new System.Drawing.Point(117, 30);
+            this.pictureBoxLogo.Name = "pictureBoxLogo";
+            this.pictureBoxLogo.Size = new System.Drawing.Size(100, 100);
+            this.pictureBoxLogo.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
+            this.pictureBoxLogo.TabIndex = 0;
+            this.pictureBoxLogo.TabStop = false;
             // 
             // label2
             // 
@@ -89,6 +90,12 @@
             this.label2.TabIndex = 4;
             this.label2.Text = "Version 1.0";
             // 
+            // timerAnim
+            // 
+            this.timerAnim.Enabled = true;
+            this.timerAnim.Interval = 5;
+            this.timerAnim.Tick += new System.EventHandler(this.timerAnim_Tick);
+            // 
             // APropos
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -98,14 +105,14 @@
             this.Controls.Add(this.buttonFermer);
             this.Controls.Add(this.richTextBox1);
             this.Controls.Add(this.label1);
-            this.Controls.Add(this.pictureBox1);
+            this.Controls.Add(this.pictureBoxLogo);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle;
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.MaximizeBox = false;
             this.MinimizeBox = false;
             this.Name = "APropos";
             this.Text = "À propos...";
-            ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.pictureBoxLogo)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -113,10 +120,11 @@
 
         #endregion
 
-        private System.Windows.Forms.PictureBox pictureBox1;
+        private System.Windows.Forms.PictureBox pictureBoxLogo;
         private System.Windows.Forms.Label label1;
         private System.Windows.Forms.RichTextBox richTextBox1;
         private System.Windows.Forms.Button buttonFermer;
         private System.Windows.Forms.Label label2;
+        private System.Windows.Forms.Timer timerAnim;
     }
 }

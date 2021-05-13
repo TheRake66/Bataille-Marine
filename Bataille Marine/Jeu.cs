@@ -90,6 +90,7 @@ namespace Bataille_Marine
                     carre.Size = new Size(this.taille, this.taille);
                     carre.Location = new Point(i * this.taille, j * this.taille);
                     carre.Image = Resources.carte;
+                    carre.SizeMode = PictureBoxSizeMode.StretchImage;
                     carre.MouseClick += (s, e) =>
                     {
                         switch (e.Button)
@@ -120,8 +121,8 @@ namespace Bataille_Marine
             this.Text = "Bataille Marine - " + this.nbCols + " par " + this.nbLigs;
             // Change la taille de la fenetre
             this.ClientSize = new Size(
-                this.taille * this.nbLigs, 
-                this.taille * this.nbCols + this.menuStripBarre.Height + this.statusStripBarre.Height
+                this.taille * this.nbCols, 
+                this.taille * this.nbLigs + this.menuStripBarre.Height + this.statusStripBarre.Height
                 );
 
             // Reset et affiche les infos de la status barre
@@ -142,7 +143,7 @@ namespace Bataille_Marine
             {
                 for (int j = 0; j < this.nbLigs; j++)
                 {
-                    if (i != colonne && j != ligne)
+                    if (i != colonne || j != ligne)
                     {
                         // Defini les mines
                         if (rnd.Next(this.probaParCase) == rnd.Next(this.probaParCase))
@@ -209,20 +210,24 @@ namespace Bataille_Marine
         // -------------------------------------------------
         private void placerNumVoisin(int num, int colonne, int ligne)
         {
-            // Met la bonne image
-            Image img = null;
-            if (num == 0) img = Resources.mer;
-            else if (num == 1) img = Resources.un;
-            else if (num == 2) img = Resources.deux;
-            else if (num == 3) img = Resources.trois;
-            else if (num == 4) img = Resources.quatre;
-            else if (num == 5) img = Resources.cinq;
-            else if (num == 6) img = Resources.six;
-            else if (num == 7) img = Resources.sept;
-            else if (num == 8) img = Resources.huit;
-            this.plateau[colonne, ligne].Image = img;
+            // Pour eviter que le expand definisse les images deja definie
+            if (!this.decouvert[colonne, ligne])
+            {
+                // Met la bonne image
+                Image img = null;
+                if (num == 0) img = Resources.mer;
+                else if (num == 1) img = Resources.un;
+                else if (num == 2) img = Resources.deux;
+                else if (num == 3) img = Resources.trois;
+                else if (num == 4) img = Resources.quatre;
+                else if (num == 5) img = Resources.cinq;
+                else if (num == 6) img = Resources.six;
+                else if (num == 7) img = Resources.sept;
+                else if (num == 8) img = Resources.huit;
+                this.plateau[colonne, ligne].Image = img;
 
-            this.decouvert[colonne, ligne] = true;
+                this.decouvert[colonne, ligne] = true;
+            }
         }
         // -------------------------------------------------
 
@@ -327,7 +332,6 @@ namespace Bataille_Marine
                 {
                     for (int j = 0; j < this.nbLigs; j++)
                     {
-                        Console.WriteLine(nbModif.ToString());
                         if (this.decouvert[i, j] && countNbVoisin(i, j) == 0)
                         {
                             // Ligne haut
@@ -489,7 +493,23 @@ namespace Bataille_Marine
 
         private void préférencesToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            openForm(new Preferences());
+            // Ouvre les preferences
+            openForm(new Preferences(
+                this.nbCols,
+                this.nbLigs,
+                this.taille,
+                this.probaParCase
+                ));
+        }
+        public void changerPreference(int nbCols, int nbLigns, int taille, int proba)
+        {
+            // Sauvegarde les parametres
+            this.nbCols = nbCols;
+            this.nbLigs = nbLigns;
+            this.taille = taille;
+            this.probaParCase = proba;
+            // Recharge les cases
+            chargerCases();
         }
 
         private void sonToolStripMenuItem_Click(object sender, EventArgs e)
@@ -526,7 +546,6 @@ namespace Bataille_Marine
         {
             openForm(new APropos());
         }
-
         // -------------------------------------------------
 
     }

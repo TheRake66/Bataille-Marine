@@ -12,9 +12,22 @@ namespace Bataille_Marine
 {
     public partial class Regles : Form
     {
+
+        // -------------------------------------------------
         public Regles()
         {
             InitializeComponent();
         }
+        // -------------------------------------------------
+
+
+
+        // -------------------------------------------------
+        private void buttonFermer_Click(object sender, EventArgs e)
+        {
+            this.Close();
+        }
+        // -------------------------------------------------
+
     }
 }
