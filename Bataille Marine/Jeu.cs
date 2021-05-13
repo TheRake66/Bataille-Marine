@@ -357,7 +357,7 @@ namespace Bataille_Marine
         private void minerCase(int colonne, int ligne)
         {
             PictureBox carre = this.plateau[colonne, ligne];
-            if (!this.decouvert[colonne, ligne] && this.nbMines > 0) // Si case pas decouverte et qu'il reste des mines
+            if (!this.decouvert[colonne, ligne] && this.nbMinesRestante > 0) // Si case pas decouverte et qu'il reste des mines
             {
                 play(Resources.papier);
                 if (this.verouiller[colonne, ligne]) // Si verouiller
