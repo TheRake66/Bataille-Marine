@@ -188,7 +188,6 @@
             // 
             // timerHorloge
             // 
-            this.timerHorloge.Enabled = true;
             this.timerHorloge.Interval = 1000;
             this.timerHorloge.Tick += new System.EventHandler(this.timerHorloge_Tick);
             // 

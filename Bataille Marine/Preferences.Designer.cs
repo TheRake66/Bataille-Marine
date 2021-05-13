@@ -98,11 +98,11 @@
             // 
             this.trackBarTaille.Location = new System.Drawing.Point(20, 164);
             this.trackBarTaille.Maximum = 50;
-            this.trackBarTaille.Minimum = 10;
+            this.trackBarTaille.Minimum = 20;
             this.trackBarTaille.Name = "trackBarTaille";
             this.trackBarTaille.Size = new System.Drawing.Size(300, 45);
             this.trackBarTaille.TabIndex = 4;
-            this.trackBarTaille.Value = 15;
+            this.trackBarTaille.Value = 20;
             this.trackBarTaille.ValueChanged += new System.EventHandler(this.trackBarTaille_ValueChanged);
             // 
             // labelProba
@@ -151,7 +151,7 @@
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(344, 321);
+            this.ClientSize = new System.Drawing.Size(344, 326);
             this.Controls.Add(this.buttonSauvegarder);
             this.Controls.Add(this.buttonAnnuler);
             this.Controls.Add(this.labelProba);

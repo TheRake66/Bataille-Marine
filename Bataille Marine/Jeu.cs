@@ -30,6 +30,7 @@ namespace Bataille_Marine
             nbLigs = 15,
             taille = 30,
             probaParCase = 7, // (NbCols + Nbligne) / 2
+            nbMinesRestante,
             nbMines,
             nbSecondes,
             nbMinutes;
@@ -128,11 +129,7 @@ namespace Bataille_Marine
             // Reset et affiche les infos de la status barre
             this.toolStripStatusLabelRestantes.Text = "Cliquez dur une case pour démarrer le jeu";
         }
-        // -------------------------------------------------
 
-
-
-        // -------------------------------------------------
         private void placerMines(int colonne, int ligne)
         {
             // Reset les mines
@@ -159,8 +156,66 @@ namespace Bataille_Marine
                 }
             }
 
+            this.nbMinesRestante = this.nbMines;
+
             // Reset et affiche les infos de la status barre
             ecrireLabelMines();
+        }
+
+        private void expandCaseVide()
+        {
+            int nbModif = 0, lastModif = 0;
+
+            do
+            {
+                lastModif = nbModif;
+                nbModif = 0;
+
+                for (int i = 0; i < this.nbCols; i++)
+                {
+                    for (int j = 0; j < this.nbLigs; j++)
+                    {
+                        if (this.decouvert[i, j] && countNbVoisin(i, j) == 0)
+                        {
+                            // Ligne haut
+                            if (j - 1 >= 0)
+                            {
+                                if (i - 1 >= 0 && this.mines[i - 1, j - 1]) placerNumVoisinAuto(i - 1, j - 1); nbModif++;
+                                if (!this.mines[i, j - 1]) placerNumVoisinAuto(i, j - 1); nbModif++;
+                                if (i + 1 < this.nbCols && this.mines[i + 1, j - 1]) placerNumVoisinAuto(i + 1, j - 1); nbModif++;
+                            }
+
+                            // Ligne milieu
+                            if (i - 1 >= 0 && !this.mines[i - 1, j]) placerNumVoisinAuto(i - 1, j); nbModif++;
+                            if (i + 1 < this.nbCols && !this.mines[i + 1, j]) placerNumVoisinAuto(i + 1, j); nbModif++;
+
+                            if (j + 1 < this.nbLigs)
+                            {
+                                // Ligne bas
+                                if (i - 1 >= 0 && !this.mines[i - 1, j + 1]) placerNumVoisinAuto(i - 1, j + 1); nbModif++;
+                                if (!this.mines[i, j + 1]) placerNumVoisinAuto(i, j + 1); nbModif++;
+                                if (i + 1 < this.nbCols && !this.mines[i + 1, j + 1]) placerNumVoisinAuto(i + 1, j + 1); nbModif++;
+                            }
+                        }
+                    }
+                }
+
+            } while (nbModif > lastModif);
+        }
+
+        private void decourvirTouteCarte()
+        {
+            for (int i = 0; i < this.nbCols; i++)
+            {
+                for (int j = 0; j < this.nbLigs; j++)
+                {
+                    if (!this.decouvert[i, j])
+                    {
+                        if (this.mines[i, j]) this.plateau[i, j].Image = Resources.mine;
+                        else placerNumVoisinAuto(i, j);
+                    }
+                }
+            }
         }
         // -------------------------------------------------
 
@@ -193,21 +248,13 @@ namespace Bataille_Marine
 
             return countmine;
         }
-        // -------------------------------------------------
 
-
-
-        // -------------------------------------------------
         private void placerNumVoisinAuto(int colonne, int ligne)
         {
             // Met la bonne image en comptant
             placerNumVoisin(countNbVoisin(colonne, ligne), colonne, ligne);
         }
-        // -------------------------------------------------
 
-
-
-        // -------------------------------------------------
         private void placerNumVoisin(int num, int colonne, int ligne)
         {
             // Pour eviter que le expand definisse les images deja definie
@@ -256,51 +303,7 @@ namespace Bataille_Marine
                 }
             }
         }
-        // -------------------------------------------------
 
-
-
-        // -------------------------------------------------
-        private void normalDecouverte(int colonne, int ligne)
-        {
-            // Son
-            play(Resources.bulle);
-
-            // Decouvre cette case
-            placerNumVoisinAuto(colonne, ligne);
-
-            expandCaseVide();
-        }
-        // -------------------------------------------------
-
-
-
-        // -------------------------------------------------
-        private void perdu(int colonne, int ligne)
-        {
-            // Son
-            play(Resources.explosion1);
-
-            this.plateau[colonne, ligne].Image = Resources.explosion;
-            this.decouvert[colonne, ligne] = true;
-
-            for (int i = 0; i < this.nbCols; i++)
-            {
-                for (int j = 0; j < this.nbLigs; j++)
-                {
-                    if (!this.decouvert[i, j])
-                    {
-                        if (this.mines[i, j]) this.plateau[i, j].Image = Resources.mine;
-                        else placerNumVoisinAuto(i, j);
-                    }
-                }
-            }
-        }
-        // -------------------------------------------------
-
-
-
-        // -------------------------------------------------
         private void premiereDecouverte(int colonne, int ligne)
         {
             // Place les mine
@@ -313,57 +316,20 @@ namespace Bataille_Marine
             this.premierClick = false;
             this.nbSecondes = 0;
             this.nbMinutes = 0;
+            this.timerHorloge.Start();
         }
-        // -------------------------------------------------
 
-
-
-        // -------------------------------------------------
-        private void expandCaseVide()
+        private void normalDecouverte(int colonne, int ligne)
         {
-            int nbModif = 0, lastModif = 0;
+            // Son
+            play(Resources.bulle);
 
-            do
-            {
-                lastModif = nbModif;
-                nbModif = 0;
+            // Decouvre cette case
+            placerNumVoisinAuto(colonne, ligne);
 
-                for (int i = 0; i < this.nbCols; i++)
-                {
-                    for (int j = 0; j < this.nbLigs; j++)
-                    {
-                        if (this.decouvert[i, j] && countNbVoisin(i, j) == 0)
-                        {
-                            // Ligne haut
-                            if (j - 1 >= 0)
-                            {
-                                if (i - 1 >= 0 && this.mines[i - 1, j - 1]) placerNumVoisinAuto(i - 1, j - 1); nbModif++;
-                                if (!this.mines[i, j - 1]) placerNumVoisinAuto(i, j - 1); nbModif++;
-                                if (i + 1 < this.nbCols && this.mines[i + 1, j - 1]) placerNumVoisinAuto(i + 1, j - 1); nbModif++;
-                            }
-
-                            // Ligne milieu
-                            if (i - 1 >= 0 && !this.mines[i - 1, j]) placerNumVoisinAuto(i - 1, j); nbModif++;
-                            if (i + 1 < this.nbCols && !this.mines[i + 1, j]) placerNumVoisinAuto(i + 1, j); nbModif++;
-
-                            if (j + 1 < this.nbLigs)
-                            {
-                                // Ligne bas
-                                if (i - 1 >= 0 && !this.mines[i - 1, j + 1]) placerNumVoisinAuto(i - 1, j + 1); nbModif++;
-                                if (!this.mines[i, j + 1]) placerNumVoisinAuto(i, j + 1); nbModif++;
-                                if (i + 1 < this.nbCols && !this.mines[i + 1, j + 1]) placerNumVoisinAuto(i + 1, j + 1); nbModif++;
-                            }
-                        }
-                    }
-                }
-
-            } while (nbModif > lastModif);
+            expandCaseVide();
         }
-        // -------------------------------------------------
 
-
-
-        // -------------------------------------------------
         private void interogationCase(int colonne, int ligne)
         {
             PictureBox carre = this.plateau[colonne, ligne];
@@ -381,14 +347,13 @@ namespace Bataille_Marine
                     // Verouille
                     carre.Image = Resources.point;
                     this.verouiller[colonne, ligne] = true;
+
+                    // Verifi si gagner
+                    checkGagner();
                 }
             }
         }
-        // -------------------------------------------------
 
-
-
-        // -------------------------------------------------
         private void minerCase(int colonne, int ligne)
         {
             PictureBox carre = this.plateau[colonne, ligne];
@@ -400,14 +365,17 @@ namespace Bataille_Marine
                     // Deverouille
                     carre.Image = Resources.carte;
                     this.verouiller[colonne, ligne] = false;
-                    this.nbMines++;
+                    this.nbMinesRestante++;
                 }
                 else
                 {
                     // Verouille
                     carre.Image = Resources.croix;
                     this.verouiller[colonne, ligne] = true;
-                    this.nbMines--;
+                    this.nbMinesRestante--;
+
+                    // Verifi si gagner
+                    checkGagner();
                 }
                 ecrireLabelMines(); // Actualise le label des mines
             }
@@ -417,10 +385,62 @@ namespace Bataille_Marine
 
 
         // -------------------------------------------------
-        private void ecrireLabelMines()
-        { 
-            // Actualise le label des mines
-            this.toolStripStatusLabelRestantes.Text = "Mines restantes : " + this.nbMines.ToString();
+        private void perdu(int colonne, int ligne)
+        {
+            // Arrete le chrono
+            this.timerHorloge.Stop();
+
+            // Son
+            play(Resources.explosion1);
+
+            // Affiche l'explosion
+            this.plateau[colonne, ligne].Image = Resources.explosion;
+            this.decouvert[colonne, ligne] = true;
+
+            // Affiche toute la carte
+            decourvirTouteCarte();
+
+            // Affiche la fenetre de victoire
+            Perdu frm = new Perdu(this.nbMines, this.nbMinutes, this.nbSecondes);
+            frm.Owner = this;
+            frm.ShowDialog();
+
+            // Reload le jeu
+            chargerCases();
+        }
+
+        private void gagner()
+        {
+            // Arrete le chrono
+            this.timerHorloge.Stop();
+
+            // Son
+            play(Resources.victory);
+
+            // Affiche toute la carte
+            decourvirTouteCarte();
+
+            // Affiche la fenetre de victoire
+            Victoire frm = new Victoire(this.nbMines, this.nbMinutes, this.nbSecondes);
+            frm.Owner = this;
+            frm.ShowDialog();
+
+            // Reload le jeu
+            chargerCases();
+        }
+
+        private void checkGagner()
+        {
+            int countCroixCorrect = 0;
+            for (int i = 0; i < this.nbCols; i++)
+            {
+                for (int j = 0; j < this.nbLigs; j++)
+                {
+                    if (this.verouiller[i, j] && this.mines[i, j]) countCroixCorrect++;
+                }
+            }
+
+            if (countCroixCorrect == this.nbMines) gagner();
         }
         // -------------------------------------------------
 
@@ -469,9 +489,15 @@ namespace Bataille_Marine
         {
             return MessageBox.Show(
                 "Êtes-vous sûr de vouloir quitter le jeu ?",
-                "?",
+                "Bataille Marine",
                 MessageBoxButtons.YesNo,
                 MessageBoxIcon.Question) == DialogResult.Yes;
+        }
+
+        private void ecrireLabelMines()
+        {
+            // Actualise le label des mines
+            this.toolStripStatusLabelRestantes.Text = "Mines restantes : " + this.nbMinesRestante.ToString();
         }
         // -------------------------------------------------
 
@@ -483,7 +509,7 @@ namespace Bataille_Marine
             // Recharge les cases
             if (MessageBox.Show(
                 "Êtes-vous sûr de vouloir recommencer une partie ?",
-                "?",
+                "Bataille Marine",
                 MessageBoxButtons.YesNo,
                 MessageBoxIcon.Question) == DialogResult.Yes)
             {
@@ -526,11 +552,7 @@ namespace Bataille_Marine
                 this.Close();
             }
         }
-        // -------------------------------------------------
 
-
-
-        // -------------------------------------------------
         private void règlesToolStripMenuItem_Click(object sender, EventArgs e)
         {
             openForm(new Regles());
