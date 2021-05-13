@@ -3,6 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
+using System.Diagnostics;
 using System.Drawing;
 using System.IO;
 using System.Linq;
@@ -53,6 +54,15 @@ namespace Bataille_Marine
         {
             // Charge les cases au lancement
             chargerCases();
+        }
+
+        private void Jeu_FormClosing(object sender, FormClosingEventArgs e)
+        {
+            // Quitte le jeu
+            if (!quitter())
+            {
+                e.Cancel = true;
+            }
         }
         // -------------------------------------------------
 
@@ -232,7 +242,7 @@ namespace Bataille_Marine
                     else
                     {
                         // Si clique sur mine
-                        perdu();
+                        perdu(colonne, ligne);
                     }
                 }
                 else
@@ -261,10 +271,14 @@ namespace Bataille_Marine
 
 
         // -------------------------------------------------
-        private void perdu()
+        private void perdu(int colonne, int ligne)
         {
             // Son
             play(Resources.explosion1);
+
+            this.plateau[colonne, ligne].Image = Resources.explosion;
+            this.decouvert[colonne, ligne] = true;
+
             for (int i = 0; i < this.nbCols; i++)
             {
                 for (int j = 0; j < this.nbLigs; j++)
@@ -356,13 +370,13 @@ namespace Bataille_Marine
                 {
                     // Deverouille
                     carre.Image = Resources.carte;
-                    this.verouiller[colonne, ligne] = true;
+                    this.verouiller[colonne, ligne] = false;
                 }
                 else
                 {
                     // Verouille
                     carre.Image = Resources.point;
-                    this.verouiller[colonne, ligne] = false;
+                    this.verouiller[colonne, ligne] = true;
                 }
             }
         }
@@ -435,8 +449,84 @@ namespace Bataille_Marine
         private void play(UnmanagedMemoryStream ressource)
         {
             // Joue async
-            using (SoundPlayer snd = new SoundPlayer(ressource)) snd.Play();
+            if (this.sonToolStripMenuItem.Checked)
+            {
+                using (SoundPlayer snd = new SoundPlayer(ressource)) snd.Play();
+            }
         }
+
+        private void openForm(Form frm)
+        {
+            frm.Owner = this;
+            frm.ShowDialog();
+        }
+
+        private bool quitter()
+        {
+            return MessageBox.Show(
+                "Êtes-vous sûr de vouloir quitter le jeu ?",
+                "?",
+                MessageBoxButtons.YesNo,
+                MessageBoxIcon.Question) == DialogResult.Yes;
+        }
+        // -------------------------------------------------
+
+
+
+        // -------------------------------------------------
+        private void recommencerToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            // Recharge les cases
+            if (MessageBox.Show(
+                "Êtes-vous sûr de vouloir recommencer une partie ?",
+                "?",
+                MessageBoxButtons.YesNo,
+                MessageBoxIcon.Question) == DialogResult.Yes)
+            {
+                chargerCases();
+            }
+        }
+
+        private void préférencesToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            openForm(new Preferences());
+        }
+
+        private void sonToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            // Coupe ou pas le son
+            this.sonToolStripMenuItem.Checked = !this.sonToolStripMenuItem.Checked;
+        }
+
+        private void quitterToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            // Quitte le jeu
+            if (quitter())
+            {
+                this.Close();
+            }
+        }
+        // -------------------------------------------------
+
+
+
+        // -------------------------------------------------
+        private void règlesToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            openForm(new Regles());
+        }
+
+        private void pageInternetToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            // Ouvre mon github
+            Process.Start("https://github.com/");
+        }
+
+        private void àProposToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            openForm(new APropos());
+        }
+
         // -------------------------------------------------
 
     }
