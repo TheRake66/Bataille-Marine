@@ -100,10 +100,6 @@ namespace Bataille_Marine
                             case MouseButtons.Left:
                                 decouvrirCase(copyI, copyJ);
                                 break;
-                            // Mettre un point d'interrogation
-                            case MouseButtons.Middle:
-                                interogationCase(copyI, copyJ);
-                                break;
                             // Mettre une croix
                             case MouseButtons.Right:
                                 minerCase(copyI, copyJ);
@@ -330,54 +326,43 @@ namespace Bataille_Marine
             expandCaseVide();
         }
 
-        private void interogationCase(int colonne, int ligne)
-        {
-            PictureBox carre = this.plateau[colonne, ligne];
-            if (!this.decouvert[colonne, ligne]) // Si case pas decouverte
-            {
-                play(Resources.papier);
-                if (this.verouiller[colonne, ligne]) // Si verouiller
-                {
-                    // Deverouille
-                    carre.Image = Resources.carte;
-                    this.verouiller[colonne, ligne] = false;
-                }
-                else
-                {
-                    // Verouille
-                    carre.Image = Resources.point;
-                    this.verouiller[colonne, ligne] = true;
-
-                    // Verifi si gagner
-                    checkGagner();
-                }
-            }
-        }
-
         private void minerCase(int colonne, int ligne)
         {
             PictureBox carre = this.plateau[colonne, ligne];
-            if (!this.decouvert[colonne, ligne] && this.nbMinesRestante > 0) // Si case pas decouverte et qu'il reste des mines
+            if (!this.decouvert[colonne, ligne]) // Si case pas decouverte 
             {
-                play(Resources.papier);
-                if (this.verouiller[colonne, ligne]) // Si verouiller
+                if (!this.verouiller[colonne, ligne]) // Si pas verouiller
                 {
+                    if (this.nbMinesRestante > 0) // il reste des mines
+                    {
+                        // Son
+                        play(Resources.papier);
+
+                        // Verouille
+                        carre.Image = Resources.croix;
+                        this.verouiller[colonne, ligne] = true;
+                        this.nbMinesRestante--;
+
+                        // Actualise le label des mines
+                        ecrireLabelMines();
+
+                        // Verifi si gagner
+                        checkGagner();
+                    }
+                }
+                else
+                {
+                    // Son
+                    play(Resources.papier);
+
                     // Deverouille
                     carre.Image = Resources.carte;
                     this.verouiller[colonne, ligne] = false;
                     this.nbMinesRestante++;
-                }
-                else
-                {
-                    // Verouille
-                    carre.Image = Resources.croix;
-                    this.verouiller[colonne, ligne] = true;
-                    this.nbMinesRestante--;
 
-                    // Verifi si gagner
-                    checkGagner();
+                    // Actualise le label des mines
+                    ecrireLabelMines();
                 }
-                ecrireLabelMines(); // Actualise le label des mines
             }
         }
         // -------------------------------------------------

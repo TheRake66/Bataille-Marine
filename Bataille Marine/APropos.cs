@@ -50,13 +50,12 @@ namespace Bataille_Marine
 
                 // Met une image random
                 Image img = null;
-                int num = this.rnd.Next(6);
+                int num = this.rnd.Next(5);
                 if (num == 0) img = Resources.un;
                 else if (num == 1) img = Resources.carte;
                 else if (num == 2) img = Resources.croix;
-                else if (num == 3) img = Resources.point;
-                else if (num == 4) img = Resources.mine;
-                else if (num == 5) img = Resources.explosion;
+                else if (num == 3) img = Resources.mine;
+                else if (num == 4) img = Resources.explosion;
                 this.pictureBoxLogo.Image = img;
             }
 

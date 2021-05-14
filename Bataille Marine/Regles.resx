@@ -122,7 +122,7 @@
 
 Lorsque le joueur clique sur une case libre comportant au moins une mine dans l'une de ses cases avoisinantes, un chiffre apparaît, indiquant ce nombre de mines. Si en revanche toutes les cases adjacentes sont vides, une case vide est affichée et la même opération est répétée sur ces cases, et ce jusqu'à ce que la zone vide soit entièrement délimitée par des chiffres. En comparant les différentes informations récoltées, le joueur peut ainsi progresser dans le déminage du terrain. S'il se trompe et clique sur une mine, il a perdu.
 
-Pour gagner il faut signaler toutes les cases contenant des mines présumées par une croix en cliquant sur le bouton droit de la souris, le nombre de mines restantes est affiché en bas à gauche. Il est également possible de signaler les cases pour lequelles on a un doute par un point d'intérrogation en cliquant sur la molette de la souris. Il faut faire attention à ne pas signaler une case saine par un drapeau, car cela peut induire en erreur ; ce n'est toutefois pas aussi pénalisant que de découvrir une mine.
+Pour gagner il faut signaler toutes les cases contenant des mines présumées par une croix en cliquant sur le bouton droit de la souris, le nombre de mines restantes est affiché en bas à gauche. Il faut faire attention à ne pas signaler une case saine par un drapeau, car cela peut induire en erreur ; ce n'est toutefois pas aussi pénalisant que de découvrir une mine.
 
 Le jeu est chronométré, ce qui permet de comparer les meilleurs scores.</value>
   </data>

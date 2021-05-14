@@ -170,16 +170,6 @@ namespace Bataille_Marine.Properties {
         /// <summary>
         ///   Recherche une ressource localisée de type System.Drawing.Bitmap.
         /// </summary>
-        internal static System.Drawing.Bitmap point {
-            get {
-                object obj = ResourceManager.GetObject("point", resourceCulture);
-                return ((System.Drawing.Bitmap)(obj));
-            }
-        }
-        
-        /// <summary>
-        ///   Recherche une ressource localisée de type System.Drawing.Bitmap.
-        /// </summary>
         internal static System.Drawing.Bitmap quatre {
             get {
                 object obj = ResourceManager.GetObject("quatre", resourceCulture);
