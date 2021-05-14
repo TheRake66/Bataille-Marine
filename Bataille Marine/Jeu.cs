@@ -123,7 +123,7 @@ namespace Bataille_Marine
                 );
 
             // Reset et affiche les infos de la status barre
-            this.toolStripStatusLabelRestantes.Text = "Cliquez dur une case pour démarrer le jeu";
+            this.toolStripStatusLabelRestantes.Text = "Cliquez sur une case pour démarrer le jeu";
         }
 
         private void placerMines(int colonne, int ligne)
@@ -386,7 +386,7 @@ namespace Bataille_Marine
             decourvirTouteCarte();
 
             // Affiche la fenetre de victoire
-            Perdu frm = new Perdu(this.nbMines, this.nbMinutes, this.nbSecondes);
+            Perdu frm = new Perdu(this.nbMinesRestante, this.nbMinutes, this.nbSecondes);
             frm.Owner = this;
             frm.ShowDialog();
 
