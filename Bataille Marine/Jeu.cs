@@ -532,10 +532,7 @@ namespace Bataille_Marine
         private void quitterToolStripMenuItem_Click(object sender, EventArgs e)
         {
             // Quitte le jeu
-            if (quitter())
-            {
-                this.Close();
-            }
+            this.Close();
         }
 
         private void règlesToolStripMenuItem_Click(object sender, EventArgs e)
