@@ -57,7 +57,7 @@
             this.panelPlateau.Dock = System.Windows.Forms.DockStyle.Fill;
             this.panelPlateau.Location = new System.Drawing.Point(0, 24);
             this.panelPlateau.Name = "panelPlateau";
-            this.panelPlateau.Size = new System.Drawing.Size(800, 426);
+            this.panelPlateau.Size = new System.Drawing.Size(800, 404);
             this.panelPlateau.TabIndex = 1;
             // 
             // paramètresToolStripMenuItem
@@ -138,26 +138,26 @@
             // règlesToolStripMenuItem
             // 
             this.règlesToolStripMenuItem.Name = "règlesToolStripMenuItem";
-            this.règlesToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.règlesToolStripMenuItem.Size = new System.Drawing.Size(144, 22);
             this.règlesToolStripMenuItem.Text = "Règles du jeu";
             this.règlesToolStripMenuItem.Click += new System.EventHandler(this.règlesToolStripMenuItem_Click);
             // 
             // toolStripSeparator3
             // 
             this.toolStripSeparator3.Name = "toolStripSeparator3";
-            this.toolStripSeparator3.Size = new System.Drawing.Size(177, 6);
+            this.toolStripSeparator3.Size = new System.Drawing.Size(141, 6);
             // 
             // pageInternetToolStripMenuItem
             // 
             this.pageInternetToolStripMenuItem.Name = "pageInternetToolStripMenuItem";
-            this.pageInternetToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.pageInternetToolStripMenuItem.Size = new System.Drawing.Size(144, 22);
             this.pageInternetToolStripMenuItem.Text = "Page internet";
             this.pageInternetToolStripMenuItem.Click += new System.EventHandler(this.pageInternetToolStripMenuItem_Click);
             // 
             // àProposToolStripMenuItem
             // 
             this.àProposToolStripMenuItem.Name = "àProposToolStripMenuItem";
-            this.àProposToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.àProposToolStripMenuItem.Size = new System.Drawing.Size(144, 22);
             this.àProposToolStripMenuItem.Text = "À propos...";
             this.àProposToolStripMenuItem.Click += new System.EventHandler(this.àProposToolStripMenuItem_Click);
             // 
@@ -196,8 +196,8 @@
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(800, 450);
-            this.Controls.Add(this.statusStripBarre);
             this.Controls.Add(this.panelPlateau);
+            this.Controls.Add(this.statusStripBarre);
             this.Controls.Add(this.menuStripBarre);
             this.DoubleBuffered = true;
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle;
